@@ -7,6 +7,25 @@
     resourceGroupName: 'temp'
     location: 'South India'
     templateLocation: 'Linked artifact'
-    csmFile: '$(System.DefaultWorkingDirectory)/_devops/deploy.json'
-    csmParametersFile: '$(System.DefaultWorkingDirectory)/_devops/parameters.json'
+    csmFile: 'deploy.json'
+    csmParametersFile: 'parameters.json'
     deploymentMode: 'Incremental'
+    deploymentName: 'dep1july'
+    deploymentOutputs: 'storageEndpoint'
+- task: ARM Outputs@5
+  inputs:
+    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+    ConnectedServiceNameARM: 'testAD'
+    resourceGroupName: 'temp'
+    outputNames: 'storageEndpoint'
+    whenLastDeploymentIsFailed: 'fail'
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'testAD'
+    ScriptType: 'InlineScript'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      
+      $armOutputObj = $storageEndpoint | convertfrom-json
+      echo $armOutputObj
