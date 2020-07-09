@@ -19,7 +19,6 @@
     resourceGroupName: 'temp'
     outputNames: 'storageEndpoint'
     whenLastDeploymentIsFailed: 'fail'
-
 - task: AzurePowerShell@5
   inputs:
     ScriptType: 'InlineScript'
