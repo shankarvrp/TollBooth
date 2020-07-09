@@ -18,4 +18,13 @@
     ConnectedServiceNameARM: 'testAD'
     resourceGroupName: 'temp'
     outputNames: 'storageEndpoint'
-    whenLastDeploymentIsFailed: 'fail''
+    whenLastDeploymentIsFailed: 'fail'
+
+- task: AzurePowerShell@5
+  inputs:
+    ScriptType: 'InlineScript'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      $armOutputObj = $storageEndpoint | convertfrom-json
+      echo $armOutputObj
