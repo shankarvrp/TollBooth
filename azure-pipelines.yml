@@ -10,5 +10,3 @@
     csmFile: '$(System.DefaultWorkingDirectory)/_devops/deploy.json'
     csmParametersFile: '$(System.DefaultWorkingDirectory)/_devops/parameters.json'
     deploymentMode: 'Incremental'
-    deploymentName: 'dep1july'
-    deploymentOutputs: 'storageEndpoint'
