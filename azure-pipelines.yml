@@ -11,7 +11,7 @@
     csmParametersFile: '$(System.DefaultWorkingDirectory)/_devops/parameters.json'
     deploymentMode: 'Incremental'
     deploymentName: 'dep1july'
-    deploymentOutputs: '
+    deploymentOutputs: 'storageEndpoint'
 - task: ARM Outputs@5
   inputs:
     ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
