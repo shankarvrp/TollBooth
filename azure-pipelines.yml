@@ -1,34 +1,21 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
-trigger:
-- master
-
-pool:
-  vmImage: 'VS2017-Win2016'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
-steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
+- task: AzureResourceManagerTemplateDeployment@3
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'testAD'
+    subscriptionId: '49d0d327-7fb4-4dcb-bd0e-62a47bf0bd29'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'temp'
+    location: 'South India'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(System.DefaultWorkingDirectory)/_devops/deploy.json'
+    csmParametersFile: '$(System.DefaultWorkingDirectory)/_devops/parameters.json'
+    deploymentMode: 'Incremental'
+    deploymentName: 'dep1july'
+    deploymentOutputs: '
+- task: ARM Outputs@5
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+    ConnectedServiceNameARM: 'testAD'
+    resourceGroupName: 'temp'
+    outputNames: 'storageEndpoint'
+    whenLastDeploymentIsFailed: 'fail''
